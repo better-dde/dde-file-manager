@@ -1,0 +1,106 @@
+diff -uNr a/src/dde-file-manager-lib/configure/global-setting-template-fedora.js b/src/dde-file-manager-lib/configure/global-setting-template-fedora.js
+--- a/src/dde-file-manager-lib/configure/global-setting-template-fedora.js	2022-06-12 18:06:01.000000000 +0800
++++ b/src/dde-file-manager-lib/configure/global-setting-template-fedora.js	2022-06-14 09:01:29.554852176 +0800
+@@ -283,6 +283,12 @@
+                     "name": qsTranslate("GenerateSettingTranslate", "Other"),
+                     "options": [
+                         {
++                            "key": "hide_vault",
++                            "text": qsTranslate("GenerateSettingTranslate", "Hide vault"),
++                            "type": "checkbox",
++                            "default": true
++                        },
++                        {
+                             "key": "hide_system_partition",
+                             "text": qsTranslate("GenerateSettingTranslate", "Hide system disk"),
+                             "type": "checkbox",
+diff -uNr a/src/dde-file-manager-lib/configure/global-setting-template.js b/src/dde-file-manager-lib/configure/global-setting-template.js
+--- a//dde-file-manager-lib/configure/global-setting-template.js	2022-06-12 18:06:01.000000000 +0800
++++ b/src/dde-file-manager-lib/configure/global-setting-template.js	2022-06-14 09:01:26.906821747 +0800
+@@ -282,6 +282,12 @@
+                     "name": qsTranslate("GenerateSettingTranslate", "Other"),
+                     "options": [
+                         {
++                            "key": "hide_vault",
++                            "text": qsTranslate("GenerateSettingTranslate", "Hide vault"),
++                            "type": "checkbox",
++                            "default": true
++                        },
++                        {
+                             "key": "hide_system_partition",
+                             "text": qsTranslate("GenerateSettingTranslate", "Hide system disk"),
+                             "type": "checkbox",
+diff -uNr a/src/dde-file-manager-lib/configure/global-setting-template-pro.js b/src/dde-file-manager-lib/configure/global-setting-template-pro.js
+--- a/src/dde-file-manager-lib/configure/global-setting-template-pro.js	2022-06-12 18:06:01.000000000 +0800
++++ b/src/dde-file-manager-lib/configure/global-setting-template-pro.js	2022-06-14 09:01:32.102881584 +0800
+@@ -283,6 +283,12 @@
+                     "name": qsTranslate("GenerateSettingTranslate", "Other"),
+                     "options": [
+                         {
++                            "key": "hide_vault",
++                            "text": qsTranslate("GenerateSettingTranslate", "Hide vault"),
++                            "type": "checkbox",
++                            "default": true
++                        },
++                        {
+                             "key": "hide_system_partition",
+                             "text": qsTranslate("GenerateSettingTranslate", "Hide system disk"),
+                             "type": "checkbox",
+diff -uNr a/src/dde-file-manager-lib/dialogs/private/dfmsettingdialog_p.h b/src/dde-file-manager-lib/dialogs/private/dfmsettingdialog_p.h
+--- a/src/dde-file-manager-lib/dialogs/private/dfmsettingdialog_p.h	2022-06-12 18:06:01.000000000 +0800
++++ b/src/dde-file-manager-lib/dialogs/private/dfmsettingdialog_p.h	2022-06-14 09:02:45.699777960 +0800
+@@ -128,6 +128,7 @@
+         {"advance.mount.always_show_offline_remote_connection", DFMApplication::GA_AlwaysShowOfflineRemoteConnections},
+         {"advance.dialog.default_chooser_dialog", DFMApplication::GA_OverrideFileChooserDialog},
+         {"advance.dialog.delete_confirmation_dialog", DFMApplication::GA_ShowDeleteConfirmDialog},
++        {"advance.other.hide_vault", DFMApplication::GA_HiddenVault},
+         {"advance.other.hide_system_partition", DFMApplication::GA_HiddenSystemPartition},
+         {"advance.other.hide_loop_partitions", DFMApplication::GA_HideLoopPartitions},
+         {"advance.other.show_crumbbar_clickable_area", DFMApplication::GA_ShowCsdCrumbBarClickableArea},
+diff -uNr a/src/dde-file-manager-lib/interfaces/dfmapplication.h b/src/dde-file-manager-lib/interfaces/dfmapplication.h
+--- a/src/dde-file-manager-lib/interfaces/dfmapplication.h	2022-06-12 18:06:01.000000000 +0800
++++ b/src/dde-file-manager-lib/interfaces/dfmapplication.h	2022-06-14 09:03:54.748676182 +0800
+@@ -72,6 +72,7 @@
+         GA_ShowedHiddenFiles, // 显示隐藏文件
+         GA_ShowedFileSuffix, // 显示文件后缀
+         GA_DisableNonRemovableDeviceUnmount, // 禁用本地磁盘卸载功能
++        GA_HiddenVault, // 隐藏保险箱
+         GA_HiddenSystemPartition, // 隐藏系统分区
+         GA_ShowRecentFileEntry, // 在侧边栏显示“最近文件”入口
+         GA_ShowCsdCrumbBarClickableArea, // 在面包屑栏预留可供点击以进入地址栏编辑状态的区域
+diff -uNr a/src/dde-file-manager-lib/translations/dde-file-manager_zh_CN.ts b/src/dde-file-manager-lib/translations/dde-file-manager_zh_CN.ts
+--- a/src/dde-file-manager-lib/translations/dde-file-manager_zh_CN.ts	2022-06-12 18:06:01.000000000 +0800
++++ b/src/dde-file-manager-lib/translations/dde-file-manager_zh_CN.ts	2022-06-14 09:06:01.236808917 +0800
+@@ -2507,6 +2507,13 @@
+         <location filename="../configure/global-setting-template-fedora.js" line="287"/>
+         <location filename="../configure/global-setting-template-pro.js" line="287"/>
+         <location filename="../configure/global-setting-template.js" line="286"/>
++        <source>Hide vault</source>
++        <translation>隐藏保险箱</translation>
++    </message>
++    <message>
++        <location filename="../configure/global-setting-template-fedora.js" line="287"/>
++        <location filename="../configure/global-setting-template-pro.js" line="287"/>
++        <location filename="../configure/global-setting-template.js" line="286"/>
+         <source>Hide system disk</source>
+         <translation>隐藏系统盘</translation>
+     </message>
+diff -uNr a/src/dde-file-manager-lib/vault/vaulthelper.cpp b/src/dde-file-manager-lib/vault/vaulthelper.cpp
+--- a/src/dde-file-manager-lib/vault/vaulthelper.cpp	2022-06-12 18:06:01.000000000 +0800
++++ b/src/dde-file-manager-lib/vault/vaulthelper.cpp	2022-06-14 09:04:34.212889222 +0800
+@@ -27,6 +27,7 @@
+ #include "dialogs/dialogmanager.h"
+ #include "dialogs/dtaskdialog.h"
+ #include "controllers/vaultcontroller.h"
++#include "dfmapplication.h"
+ 
+ #include <DWindowManagerHelper>
+ #include <DForeignWindow>
+@@ -147,6 +148,7 @@
+ 
+ bool VaultHelper::isVaultEnabled()
+ {
++    return !DFMApplication::genericAttribute(DFMApplication::GA_HiddenVault).toBool();
+     if (!VaultController::ins()->isVaultVisiable())     // 判断域管策略,是否显示保险箱
+         return false;
+ 

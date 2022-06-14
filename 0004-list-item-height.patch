@@ -1,0 +1,12 @@
+diff -uNr a/src/dde-file-manager-lib/interfaces/dlistitemdelegate.cpp b/src/dde-file-manager-lib/interfaces/dlistitemdelegate.cpp
+--- a/src/dde-file-manager-lib/interfaces/dlistitemdelegate.cpp	2022-06-12 18:06:01.000000000 +0800
++++ b/src/dde-file-manager-lib/interfaces/dlistitemdelegate.cpp	2022-06-14 09:16:41.953977802 +0800
+@@ -650,7 +650,7 @@
+     Q_D(DListItemDelegate);
+ 
+     d->textLineHeight = parent()->parent()->fontMetrics().lineSpacing();
+-    d->itemSizeHint = QSize(-1, qMax(int(parent()->parent()->iconSize().height() * 1.1), d->textLineHeight));
++    d->itemSizeHint = QSize(-1, qMax(int(parent()->parent()->iconSize().height() * 1.5), d->textLineHeight));
+ }
+ 
+ bool DListItemDelegate::eventFilter(QObject *object, QEvent *event)

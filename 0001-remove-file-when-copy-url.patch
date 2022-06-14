@@ -1,0 +1,12 @@
+diff -uNr a/src/dde-file-manager-lib/interfaces/dfmcrumbbar.cpp b/src/dde-file-manager-lib/interfaces/dfmcrumbbar.cpp
+--- a/src/dde-file-manager-lib/interfaces/dfmcrumbbar.cpp	2022-06-12 18:06:01.000000000 +0800
++++ b/src/dde-file-manager-lib/interfaces/dfmcrumbbar.cpp	2022-06-14 08:54:15.728944320 +0800
+@@ -607,7 +607,7 @@
+         QString virtualUrl(url.toString());
+         if (VaultController::isVaultFile(virtualUrl))
+             virtualUrl = VaultController::localPathToVirtualPath(url.toLocalFile());
+-        QGuiApplication::clipboard()->setText(virtualUrl);
++        QGuiApplication::clipboard()->setText(virtualUrl.replace(FILE_ROOT, "/"));
+     });
+ 
+     menu->addAction(newWndIcon, QObject::tr("Open in new window"), [url]() {
