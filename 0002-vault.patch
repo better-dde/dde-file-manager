@@ -15,7 +15,7 @@ diff -uNr a/src/dde-file-manager-lib/configure/global-setting-template-fedora.js
                              "text": qsTranslate("GenerateSettingTranslate", "Hide system disk"),
                              "type": "checkbox",
 diff -uNr a/src/dde-file-manager-lib/configure/global-setting-template.js b/src/dde-file-manager-lib/configure/global-setting-template.js
---- a//dde-file-manager-lib/configure/global-setting-template.js	2022-06-12 18:06:01.000000000 +0800
+--- a/src/dde-file-manager-lib/configure/global-setting-template.js	2022-06-12 18:06:01.000000000 +0800
 +++ b/src/dde-file-manager-lib/configure/global-setting-template.js	2022-06-14 09:01:26.906821747 +0800
 @@ -282,6 +282,12 @@
                      "name": qsTranslate("GenerateSettingTranslate", "Other"),
