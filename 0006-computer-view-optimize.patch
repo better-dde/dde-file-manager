@@ -1,0 +1,33 @@
+diff -uNr a/src/dde-file-manager-lib/models/dfmrootfileinfo.cpp b/src/dde-file-manager-lib/models/dfmrootfileinfo.cpp
+--- a/src/dde-file-manager-lib/models/dfmrootfileinfo.cpp	2022-07-26 09:48:16.000000000 +0800
++++ b/src/dde-file-manager-lib/models/dfmrootfileinfo.cpp	2022-08-06 18:25:01.951022901 +0800
+@@ -166,14 +166,24 @@
+     return false; //默认返回false warning项
+ }
+ 
++QHash<QString, QString> suffixCache;
++QRegularExpression suffixRe(".*\\.(.*)$");
++
+ QString DFMRootFileInfo::suffix() const
+ {
+-    QRegularExpression re(".*\\.(.*)$");
+-    auto rem = re.match(fileName());
+-    if (!rem.hasMatch()) {
+-        return "";
++    auto fname = fileName();
++    auto cdata = suffixCache.find(fname);
++    if (cdata != suffixCache.end()) {
++        return cdata.value();
+     }
+-    return rem.captured(1);
++    auto rem = suffixRe.match(fname);
++     if (!rem.hasMatch()) {
++        suffixCache.insert(fname, "");
++         return "";
++     }
++    auto v = rem.captured(1);
++    suffixCache.insert(fname, v);
++    return v;
+ }
+ 
+ QString DFMRootFileInfo::fileDisplayName() const

@@ -1,0 +1,142 @@
+diff -uNr a/src/dde-file-manager-lib/configure/global-setting-template-fedora.js b/src/dde-file-manager-lib/configure/global-setting-template-fedora.js
+--- a/src/dde-file-manager-lib/configure/global-setting-template-fedora.js	2022-08-06 18:18:53.238295170 +0800
++++ b/src/dde-file-manager-lib/configure/global-setting-template-fedora.js	2022-08-06 18:25:56.003788551 +0800
+@@ -295,6 +295,12 @@
+                     "name": qsTranslate("GenerateSettingTranslate", "Other"),
+                     "options": [
+                         {
++                            "key": "hide_my_directories",
++                            "text": qsTranslate("GenerateSettingTranslate", "Hide my directories"),
++                            "type": "checkbox",
++                            "default": false
++                        },
++                        {
+                             "key": "hide_vault",
+                             "text": qsTranslate("GenerateSettingTranslate", "Hide vault"),
+                             "type": "checkbox",
+diff -uNr a/src/dde-file-manager-lib/configure/global-setting-template.js b/src/dde-file-manager-lib/configure/global-setting-template.js
+--- a/src/dde-file-manager-lib/configure/global-setting-template.js	2022-08-06 18:18:53.238295170 +0800
++++ b/src/dde-file-manager-lib/configure/global-setting-template.js	2022-08-06 18:26:03.855900921 +0800
+@@ -294,6 +294,12 @@
+                     "name": qsTranslate("GenerateSettingTranslate", "Other"),
+                     "options": [
+                         {
++                            "key": "hide_my_directories",
++                            "text": qsTranslate("GenerateSettingTranslate", "Hide my directories"),
++                            "type": "checkbox",
++                            "default": false
++                        },
++                        {
+                             "key": "hide_vault",
+                             "text": qsTranslate("GenerateSettingTranslate", "Hide vault"),
+                             "type": "checkbox",
+diff -uNr a/src/dde-file-manager-lib/configure/global-setting-template-pro.js b/src/dde-file-manager-lib/configure/global-setting-template-pro.js
+--- a/src/dde-file-manager-lib/configure/global-setting-template-pro.js	2022-08-06 18:18:53.238295170 +0800
++++ b/src/dde-file-manager-lib/configure/global-setting-template-pro.js	2022-08-06 18:25:59.827843241 +0800
+@@ -295,6 +295,12 @@
+                     "name": qsTranslate("GenerateSettingTranslate", "Other"),
+                     "options": [
+                         {
++                            "key": "hide_my_directories",
++                            "text": qsTranslate("GenerateSettingTranslate", "Hide my directories"),
++                            "type": "checkbox",
++                            "default": false
++                        },
++                        {
+                             "key": "hide_vault",
+                             "text": qsTranslate("GenerateSettingTranslate", "Hide vault"),
+                             "type": "checkbox",
+diff -uNr a/src/dde-file-manager-lib/dialogs/private/dfmsettingdialog_p.h b/src/dde-file-manager-lib/dialogs/private/dfmsettingdialog_p.h
+--- a/src/dde-file-manager-lib/dialogs/private/dfmsettingdialog_p.h	2022-08-06 18:18:53.238295170 +0800
++++ b/src/dde-file-manager-lib/dialogs/private/dfmsettingdialog_p.h	2022-08-06 18:26:23.408181928 +0800
+@@ -128,6 +128,7 @@
+         {"advance.mount.always_show_offline_remote_connection", DFMApplication::GA_AlwaysShowOfflineRemoteConnections},
+         {"advance.dialog.default_chooser_dialog", DFMApplication::GA_OverrideFileChooserDialog},
+         {"advance.dialog.delete_confirmation_dialog", DFMApplication::GA_ShowDeleteConfirmDialog},
++        {"advance.other.hide_my_directories", DFMApplication::GA_HiddenMyDirectories},
+         {"advance.other.hide_vault", DFMApplication::GA_HiddenVault},
+         {"advance.other.hide_system_partition", DFMApplication::GA_HiddenSystemPartition},
+         {"advance.other.hide_loop_partitions", DFMApplication::GA_HideLoopPartitions},
+diff -uNr a/src/dde-file-manager-lib/interfaces/dfmapplication.cpp b/src/dde-file-manager-lib/interfaces/dfmapplication.cpp
+--- a/src/dde-file-manager-lib/interfaces/dfmapplication.cpp	2022-08-06 18:18:53.242295215 +0800
++++ b/src/dde-file-manager-lib/interfaces/dfmapplication.cpp	2022-08-06 18:27:07.120816074 +0800
+@@ -122,6 +122,7 @@
+             }
+             //Q_EMIT self->reloadComputerModel();
+             break;
++        case DFMApplication::GA_HiddenMyDirectories:
+         case DFMApplication::GA_HiddenVault:
+         case DFMApplication::GA_HideLoopPartitions:
+             Q_EMIT self->reloadComputerModel();
+diff -uNr a/src/dde-file-manager-lib/interfaces/dfmapplication.h b/src/dde-file-manager-lib/interfaces/dfmapplication.h
+--- a/src/dde-file-manager-lib/interfaces/dfmapplication.h	2022-08-06 18:18:53.242295215 +0800
++++ b/src/dde-file-manager-lib/interfaces/dfmapplication.h	2022-08-06 18:26:41.192438967 +0800
+@@ -74,6 +74,7 @@
+         GA_ShowedHiddenFiles, // 显示隐藏文件
+         GA_ShowedFileSuffix, // 显示文件后缀
+         GA_DisableNonRemovableDeviceUnmount, // 禁用本地磁盘卸载功能
++        GA_HiddenMyDirectories, // 隐藏我的目录
+         GA_HiddenVault, // 隐藏保险箱
+         GA_HiddenSystemPartition, // 隐藏系统分区
+         GA_ShowRecentFileEntry, // 在侧边栏显示“最近文件”入口
+diff -uNr a/src/dde-file-manager-lib/models/computermodel.cpp b/src/dde-file-manager-lib/models/computermodel.cpp
+--- a/src/dde-file-manager-lib/models/computermodel.cpp	2022-07-26 09:48:16.000000000 +0800
++++ b/src/dde-file-manager-lib/models/computermodel.cpp	2022-08-06 18:29:50.252117242 +0800
+@@ -46,6 +46,7 @@
+ #include "vault/vaulthelper.h"
+ #include "computermodel.h"
+ #include "utils.h"
++#include "dfmapplication.h"
+ 
+ #include <QtConcurrent>
+ 
+@@ -68,7 +69,9 @@
+     m_initThread.first = false;
+     m_initThread.second = QtConcurrent::run([=](){
+ #endif
+-        addItem(makeSplitterUrl(MyDirectories));
++        bool disabledMyDirectories = DFMApplication::genericAttribute(DFMApplication::GA_HiddenMyDirectories).toBool();
++        if(!disabledMyDirectories)
++            addItem(makeSplitterUrl(MyDirectories));
+         auto rootInit = [=](const QList<DAbstractFileInfoPointer> &ch){
+             QMutexLocker lx(&m_initItemMutex);
+             bool opticalchanged = false;
+@@ -79,7 +82,9 @@
+                     return;
+ #endif
+                 if (chi->scheme() == DFMROOT_SCHEME && chi->suffix() == SUFFIX_USRDIR) {
+-                    addItem(chi->fileUrl());
++                    bool disabledMyDirectories = DFMApplication::genericAttribute(DFMApplication::GA_HiddenMyDirectories).toBool();
++                    if(!disabledMyDirectories)
++                        addItem(chi->fileUrl());
+                 } else {
+                     //跳过smb挂载或缓存项，后面单独创建聚合项
+                     QString smbIp;
+@@ -146,7 +151,9 @@
+             m_items.clear();
+             endResetModel();
+             m_nitems = 0;
+-            addItem(makeSplitterUrl(MyDirectories));
++            bool disabledMyDirectories = DFMApplication::genericAttribute(DFMApplication::GA_HiddenMyDirectories).toBool();
++            if(!disabledMyDirectories)
++                addItem(makeSplitterUrl(MyDirectories));
+             QList<DAbstractFileInfoPointer> ch = rootFileManager->getRootFile();
+             if (!g_isFileDialogMode) {
+                 DFMAppEntryController appEntryController;
+diff -uNr a/src/dde-file-manager-lib/translations/dde-file-manager_zh_CN.ts b/src/dde-file-manager-lib/translations/dde-file-manager_zh_CN.ts
+--- a/src/dde-file-manager-lib/translations/dde-file-manager_zh_CN.ts	2022-08-06 18:18:53.242295215 +0800
++++ b/src/dde-file-manager-lib/translations/dde-file-manager_zh_CN.ts	2022-08-06 18:27:56.905547544 +0800
+@@ -2571,6 +2571,13 @@
+         <location filename="../configure/global-setting-template-fedora.js" line="299"/>
+         <location filename="../configure/global-setting-template-pro.js" line="299"/>
+         <location filename="../configure/global-setting-template.js" line="298"/>
++        <source>Hide my directories</source>
++        <translation>隐藏我的目录</translation>
++    </message>
++    <message>
++        <location filename="../configure/global-setting-template-fedora.js" line="299"/>
++        <location filename="../configure/global-setting-template-pro.js" line="299"/>
++        <location filename="../configure/global-setting-template.js" line="298"/>
+         <source>Hide vault</source>
+         <translation>隐藏保险箱</translation>
+     </message>

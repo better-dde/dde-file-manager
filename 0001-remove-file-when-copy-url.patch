@@ -1,12 +1,16 @@
 diff -uNr a/src/dde-file-manager-lib/interfaces/dfmcrumbbar.cpp b/src/dde-file-manager-lib/interfaces/dfmcrumbbar.cpp
---- a/src/dde-file-manager-lib/interfaces/dfmcrumbbar.cpp	2022-06-12 18:06:01.000000000 +0800
-+++ b/src/dde-file-manager-lib/interfaces/dfmcrumbbar.cpp	2022-06-14 08:54:15.728944320 +0800
-@@ -607,7 +607,7 @@
+--- a/src/dde-file-manager-lib/interfaces/dfmcrumbbar.cpp	2022-07-26 09:48:16.000000000 +0800
++++ b/src/dde-file-manager-lib/interfaces/dfmcrumbbar.cpp	2022-08-06 18:12:27.738959866 +0800
+@@ -605,8 +605,11 @@
+     menu->addAction(copyIcon, QObject::tr("Copy path"), [ = ]() {
+         // 如果为保险箱路径则进行路径转换
          QString virtualUrl(url.toString());
-         if (VaultController::isVaultFile(virtualUrl))
+-        if (VaultController::isVaultFile(virtualUrl))
++        if (VaultController::isVaultFile(virtualUrl)) {
              virtualUrl = VaultController::localPathToVirtualPath(url.toLocalFile());
--        QGuiApplication::clipboard()->setText(virtualUrl);
-+        QGuiApplication::clipboard()->setText(virtualUrl.replace(FILE_ROOT, "/"));
++        } else if (url.isLocalFile()) {
++            virtualUrl = url.toLocalFile();
++        }
+         QGuiApplication::clipboard()->setText(virtualUrl);
      });
  
-     menu->addAction(newWndIcon, QObject::tr("Open in new window"), [url]() {

@@ -1,7 +1,7 @@
 diff -uNr a/src/dde-file-manager-lib/configure/global-setting-template-fedora.js b/src/dde-file-manager-lib/configure/global-setting-template-fedora.js
---- a/src/dde-file-manager-lib/configure/global-setting-template-fedora.js	2022-06-12 18:06:01.000000000 +0800
-+++ b/src/dde-file-manager-lib/configure/global-setting-template-fedora.js	2022-06-14 09:01:29.554852176 +0800
-@@ -283,6 +283,12 @@
+--- a/src/dde-file-manager-lib/configure/global-setting-template-fedora.js	2022-07-26 09:48:16.000000000 +0800
++++ b/src/dde-file-manager-lib/configure/global-setting-template-fedora.js	2022-08-06 18:14:35.411799599 +0800
+@@ -295,6 +295,12 @@
                      "name": qsTranslate("GenerateSettingTranslate", "Other"),
                      "options": [
                          {
@@ -15,9 +15,9 @@ diff -uNr a/src/dde-file-manager-lib/configure/global-setting-template-fedora.js
                              "text": qsTranslate("GenerateSettingTranslate", "Hide system disk"),
                              "type": "checkbox",
 diff -uNr a/src/dde-file-manager-lib/configure/global-setting-template.js b/src/dde-file-manager-lib/configure/global-setting-template.js
---- a//dde-file-manager-lib/configure/global-setting-template.js	2022-06-12 18:06:01.000000000 +0800
-+++ b/src/dde-file-manager-lib/configure/global-setting-template.js	2022-06-14 09:01:26.906821747 +0800
-@@ -282,6 +282,12 @@
+--- a/src/dde-file-manager-lib/configure/global-setting-template.js	2022-07-26 09:48:16.000000000 +0800
++++ b/src/dde-file-manager-lib/configure/global-setting-template.js	2022-08-06 18:14:52.155932269 +0800
+@@ -294,6 +294,12 @@
                      "name": qsTranslate("GenerateSettingTranslate", "Other"),
                      "options": [
                          {
@@ -31,9 +31,9 @@ diff -uNr a/src/dde-file-manager-lib/configure/global-setting-template.js b/src/
                              "text": qsTranslate("GenerateSettingTranslate", "Hide system disk"),
                              "type": "checkbox",
 diff -uNr a/src/dde-file-manager-lib/configure/global-setting-template-pro.js b/src/dde-file-manager-lib/configure/global-setting-template-pro.js
---- a/src/dde-file-manager-lib/configure/global-setting-template-pro.js	2022-06-12 18:06:01.000000000 +0800
-+++ b/src/dde-file-manager-lib/configure/global-setting-template-pro.js	2022-06-14 09:01:32.102881584 +0800
-@@ -283,6 +283,12 @@
+--- a/src/dde-file-manager-lib/configure/global-setting-template-pro.js	2022-07-26 09:48:16.000000000 +0800
++++ b/src/dde-file-manager-lib/configure/global-setting-template-pro.js	2022-08-06 18:14:43.807865528 +0800
+@@ -295,6 +295,12 @@
                      "name": qsTranslate("GenerateSettingTranslate", "Other"),
                      "options": [
                          {
@@ -47,8 +47,8 @@ diff -uNr a/src/dde-file-manager-lib/configure/global-setting-template-pro.js b/
                              "text": qsTranslate("GenerateSettingTranslate", "Hide system disk"),
                              "type": "checkbox",
 diff -uNr a/src/dde-file-manager-lib/dialogs/private/dfmsettingdialog_p.h b/src/dde-file-manager-lib/dialogs/private/dfmsettingdialog_p.h
---- a/src/dde-file-manager-lib/dialogs/private/dfmsettingdialog_p.h	2022-06-12 18:06:01.000000000 +0800
-+++ b/src/dde-file-manager-lib/dialogs/private/dfmsettingdialog_p.h	2022-06-14 09:02:45.699777960 +0800
+--- a/src/dde-file-manager-lib/dialogs/private/dfmsettingdialog_p.h	2022-07-26 09:48:16.000000000 +0800
++++ b/src/dde-file-manager-lib/dialogs/private/dfmsettingdialog_p.h	2022-08-06 18:15:28.444235715 +0800
 @@ -128,6 +128,7 @@
          {"advance.mount.always_show_offline_remote_connection", DFMApplication::GA_AlwaysShowOfflineRemoteConnections},
          {"advance.dialog.default_chooser_dialog", DFMApplication::GA_OverrideFileChooserDialog},
@@ -57,10 +57,21 @@ diff -uNr a/src/dde-file-manager-lib/dialogs/private/dfmsettingdialog_p.h b/src/
          {"advance.other.hide_system_partition", DFMApplication::GA_HiddenSystemPartition},
          {"advance.other.hide_loop_partitions", DFMApplication::GA_HideLoopPartitions},
          {"advance.other.show_crumbbar_clickable_area", DFMApplication::GA_ShowCsdCrumbBarClickableArea},
+diff -uNr a/src/dde-file-manager-lib/interfaces/dfmapplication.cpp b/src/dde-file-manager-lib/interfaces/dfmapplication.cpp
+--- a/src/dde-file-manager-lib/interfaces/dfmapplication.cpp	2022-07-26 09:48:16.000000000 +0800
++++ b/src/dde-file-manager-lib/interfaces/dfmapplication.cpp	2022-08-06 18:18:37.534119248 +0800
+@@ -122,6 +122,7 @@
+             }
+             //Q_EMIT self->reloadComputerModel();
+             break;
++        case DFMApplication::GA_HiddenVault:
+         case DFMApplication::GA_HideLoopPartitions:
+             Q_EMIT self->reloadComputerModel();
+             break;
 diff -uNr a/src/dde-file-manager-lib/interfaces/dfmapplication.h b/src/dde-file-manager-lib/interfaces/dfmapplication.h
---- a/src/dde-file-manager-lib/interfaces/dfmapplication.h	2022-06-12 18:06:01.000000000 +0800
-+++ b/src/dde-file-manager-lib/interfaces/dfmapplication.h	2022-06-14 09:03:54.748676182 +0800
-@@ -72,6 +72,7 @@
+--- a/src/dde-file-manager-lib/interfaces/dfmapplication.h	2022-07-26 09:48:16.000000000 +0800
++++ b/src/dde-file-manager-lib/interfaces/dfmapplication.h	2022-08-06 18:15:58.464502346 +0800
+@@ -74,6 +74,7 @@
          GA_ShowedHiddenFiles, // 显示隐藏文件
          GA_ShowedFileSuffix, // 显示文件后缀
          GA_DisableNonRemovableDeviceUnmount, // 禁用本地磁盘卸载功能
@@ -69,25 +80,25 @@ diff -uNr a/src/dde-file-manager-lib/interfaces/dfmapplication.h b/src/dde-file-
          GA_ShowRecentFileEntry, // 在侧边栏显示“最近文件”入口
          GA_ShowCsdCrumbBarClickableArea, // 在面包屑栏预留可供点击以进入地址栏编辑状态的区域
 diff -uNr a/src/dde-file-manager-lib/translations/dde-file-manager_zh_CN.ts b/src/dde-file-manager-lib/translations/dde-file-manager_zh_CN.ts
---- a/src/dde-file-manager-lib/translations/dde-file-manager_zh_CN.ts	2022-06-12 18:06:01.000000000 +0800
-+++ b/src/dde-file-manager-lib/translations/dde-file-manager_zh_CN.ts	2022-06-14 09:06:01.236808917 +0800
-@@ -2507,6 +2507,13 @@
-         <location filename="../configure/global-setting-template-fedora.js" line="287"/>
-         <location filename="../configure/global-setting-template-pro.js" line="287"/>
-         <location filename="../configure/global-setting-template.js" line="286"/>
+--- a/src/dde-file-manager-lib/translations/dde-file-manager_zh_CN.ts	2022-07-26 09:48:16.000000000 +0800
++++ b/src/dde-file-manager-lib/translations/dde-file-manager_zh_CN.ts	2022-08-06 18:17:11.745207393 +0800
+@@ -2571,6 +2571,13 @@
+         <location filename="../configure/global-setting-template-fedora.js" line="299"/>
+         <location filename="../configure/global-setting-template-pro.js" line="299"/>
+         <location filename="../configure/global-setting-template.js" line="298"/>
 +        <source>Hide vault</source>
 +        <translation>隐藏保险箱</translation>
 +    </message>
 +    <message>
-+        <location filename="../configure/global-setting-template-fedora.js" line="287"/>
-+        <location filename="../configure/global-setting-template-pro.js" line="287"/>
-+        <location filename="../configure/global-setting-template.js" line="286"/>
++        <location filename="../configure/global-setting-template-fedora.js" line="299"/>
++        <location filename="../configure/global-setting-template-pro.js" line="299"/>
++        <location filename="../configure/global-setting-template.js" line="298"/>
          <source>Hide system disk</source>
          <translation>隐藏系统盘</translation>
      </message>
 diff -uNr a/src/dde-file-manager-lib/vault/vaulthelper.cpp b/src/dde-file-manager-lib/vault/vaulthelper.cpp
---- a/src/dde-file-manager-lib/vault/vaulthelper.cpp	2022-06-12 18:06:01.000000000 +0800
-+++ b/src/dde-file-manager-lib/vault/vaulthelper.cpp	2022-06-14 09:04:34.212889222 +0800
+--- a/src/dde-file-manager-lib/vault/vaulthelper.cpp	2022-07-26 09:48:16.000000000 +0800
++++ b/src/dde-file-manager-lib/vault/vaulthelper.cpp	2022-08-06 18:18:00.413714137 +0800
 @@ -27,6 +27,7 @@
  #include "dialogs/dialogmanager.h"
  #include "dialogs/dtaskdialog.h"

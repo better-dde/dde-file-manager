@@ -1,6 +1,6 @@
 diff -uNr a/src/dde-desktop/presenter/gridmanager.cpp b/src/dde-desktop/presenter/gridmanager.cpp
---- a/src/dde-desktop/presenter/gridmanager.cpp	2022-06-12 18:06:01.000000000 +0800
-+++ b/src/dde-desktop/presenter/gridmanager.cpp	2022-06-14 09:08:55.069531038 +0800
+--- a/src/dde-desktop/presenter/gridmanager.cpp	2022-07-26 09:48:16.000000000 +0800
++++ b/src/dde-desktop/presenter/gridmanager.cpp	2022-08-06 18:19:58.575053905 +0800
 @@ -55,17 +55,7 @@
                      << dir.filePath("dde-computer.desktop");
  
@@ -20,9 +20,9 @@ diff -uNr a/src/dde-desktop/presenter/gridmanager.cpp b/src/dde-desktop/presente
  //        settings->beginGroup(Config::groupGeneral);
  //        autoArrange = settings->value(Config::keyAutoAlign).toBool();
 diff -uNr a/src/dde-desktop/view/canvasgridview.cpp b/src/dde-desktop/view/canvasgridview.cpp
---- a/src/dde-desktop/view/canvasgridview.cpp	2022-06-12 18:06:01.000000000 +0800
-+++ b/src/dde-desktop/view/canvasgridview.cpp	2022-06-14 09:09:36.549819952 +0800
-@@ -2952,7 +2952,6 @@
+--- a/src/dde-desktop/view/canvasgridview.cpp	2022-07-26 09:48:16.000000000 +0800
++++ b/src/dde-desktop/view/canvasgridview.cpp	2022-08-06 18:20:12.827224807 +0800
+@@ -2970,7 +2970,6 @@
          }
      });
  
@@ -30,7 +30,7 @@ diff -uNr a/src/dde-desktop/view/canvasgridview.cpp b/src/dde-desktop/view/canva
      connect(this, &CanvasGridView::autoMergeToggled, this, []() {
          bool enable = !GridManager::instance()->autoMerge();
          GridManager::instance()->setAutoMerge(enable);
-@@ -2960,7 +2959,6 @@
+@@ -2978,7 +2977,6 @@
  
          emit GridManager::instance()->sigSyncOperation(GridManager::soAutoMerge, enable);
      });
@@ -38,7 +38,7 @@ diff -uNr a/src/dde-desktop/view/canvasgridview.cpp b/src/dde-desktop/view/canva
  
      connect(this, &CanvasGridView::sortRoleChanged,
              Presenter::instance(), &Presenter::onSortRoleChanged);
-@@ -3437,7 +3435,6 @@
+@@ -3456,7 +3454,6 @@
      iconSizeAction.setMenu(&iconSizeMenu);
      menu->insertAction(pasteAction, &iconSizeAction);
  
@@ -46,7 +46,7 @@ diff -uNr a/src/dde-desktop/view/canvasgridview.cpp b/src/dde-desktop/view/canva
      //自动整理
      QAction menuAutoMerge(menu);
      menuAutoMerge.setText(tr("Auto merge"));
-@@ -3448,7 +3445,6 @@
+@@ -3467,7 +3464,6 @@
      if (settings.value("auto-merge").toBool()) {
          menu->insertAction(pasteAction, &menuAutoMerge);
      }

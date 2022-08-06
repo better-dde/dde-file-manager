@@ -1,6 +1,6 @@
 diff -uNr a/src/dde-file-manager-lib/interfaces/dlistitemdelegate.cpp b/src/dde-file-manager-lib/interfaces/dlistitemdelegate.cpp
---- a/src/dde-file-manager-lib/interfaces/dlistitemdelegate.cpp	2022-06-12 18:06:01.000000000 +0800
-+++ b/src/dde-file-manager-lib/interfaces/dlistitemdelegate.cpp	2022-06-14 09:16:41.953977802 +0800
+--- a/src/dde-file-manager-lib/interfaces/dlistitemdelegate.cpp	2022-07-26 09:48:16.000000000 +0800
++++ b/src/dde-file-manager-lib/interfaces/dlistitemdelegate.cpp	2022-08-06 18:21:57.484532362 +0800
 @@ -650,7 +650,7 @@
      Q_D(DListItemDelegate);
  
